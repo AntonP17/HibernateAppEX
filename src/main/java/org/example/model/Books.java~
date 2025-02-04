@@ -7,8 +7,11 @@ public class Books {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "books_seq", sequenceName = "books_seq", allocationSize = 1) //
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+    generator = "books_seq")
+    @SequenceGenerator(name = "books_seq" , // название в джава мире
+            sequenceName = "books_id_seq", // в бд
+            allocationSize = 20) // как генерируется sequence , то на которое будет умножатся значение из sequence
     private int id;
 
     @Column(name = "tittle")

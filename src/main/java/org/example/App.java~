@@ -36,7 +36,7 @@ public class App {
             personGet.setName("Alex");  // обновляем обьект в БД
 
             Person personGet2 = session.get(Person.class, 2);
-//            session.delete(personGet2); // удаляем обьект в БД
+            session.delete(personGet2); // удаляем обьект в БД
 
             System.out.println(person4.getId());
 
