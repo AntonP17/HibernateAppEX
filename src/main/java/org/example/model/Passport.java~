@@ -1,0 +1,24 @@
+package org.example.model;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Passport {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "number")
+    private String number;
+
+    @OneToOne(mappedBy = "passport")
+    private  Сitizen citizen;
+
+    public Passport( String number, Сitizen citizen) {
+
+        this.number = number;
+        this.citizen = citizen;
+    }
+}

@@ -1,0 +1,82 @@
+СОХРАНЕНИЕ , УДАЛЕНИЕ , ОБНОВЛЕНИЕ СУЩНОСТЕЙ
+
+Person person = new Person("John", 25); // создаем обьект
+            Person person2 = new Person("John2", 55); // создаем обьект
+            Person person3 = new Person("John3", 65); // создаем обьект
+            Person person4 = new Person("Anton", 75); // создаем обьект
+
+            session.save(person); // сохраняем обьект в БД
+          session.save(person2); // сохраняем обьект в БД
+           session.save(person3); // сохраняем обьект в БД
+
+
+            Person personGet = session.get(Person.class, 1); // получаем обьект по id
+            personGet.setName("Alex");  // обновляем обьект в БД
+
+            Person personGet2 = session.get(Person.class, 2); // получаем обьект по id
+           session.delete(personGet2); // удаляем обьект в БД
+
+            System.out.println(person4.getId());
+
+          Person personTest = session.get(Person.class, 1); // получаем обьект по id
+            System.out.println(personTest.getName() + " " + personTest.getAge() + " "+ personTest.getId());
+
+КАСКАДИРОВАНИЕ
+
+cascade = CascadeType.ALL
+пока вот это , что при удалении одного удалется многие
+
+
+
+СОСТОЯНИЯ СУЩНОСТЕЙ , ЖИЗНЕННЫЕ ЦИКЛЫ
+
+- TRANSIENT (временное состояние)
+
+Person person = new Person("John", 25); // создаем обьект
+person.setName("Alex"); // обновляем обьект в БД
+
+- PERSISTENT (управляемое состояние)
+
+Session session = sessionFactory.openSession(); // галвный обьект для свзяи с Hibernate
+Transaction transaction = session.beginTransaction(); // начинаем транзакцию
+
+session.save(person); // сохраняем обьект в БД (ЭТО И ЕСТЬ PERSISTENT)
+
+transaction.commit(); // применяем транзакцию
+session.close(); // закрываем сессию
+
+- DETACHED (отсоединенное состояние)
+
+session.close(); // закрываем сессию , обьект переходит в DETACHED
+
+- REMOVED (удаленное состояние)
+
+session.delete(person); // удаляем обьект в БД
+
+ПРИМЕР ЖИЗНЕННЫХ ЦИКЛОВ
+// Transient
+Person person = new Person();
+person.setName("John Doe");
+
+// Persistent
+Session session = sessionFactory.openSession();
+Transaction transaction = session.beginTransaction();
+session.save(person); // Сохраняем объект в базе данных
+transaction.commit();
+
+// Detached
+session.close();
+
+// Persistent (повторное присоединение)
+session = sessionFactory.openSession();
+transaction = session.beginTransaction();
+session.update(person); // Присоединяем объект к сессии
+transaction.commit();
+
+// Removed
+transaction = session.beginTransaction();
+session.delete(person); // Удаляем объект
+transaction.commit();
+
+// Transient (после удаления)
+session.close();
