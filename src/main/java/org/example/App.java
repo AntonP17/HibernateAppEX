@@ -22,9 +22,9 @@ public class App {
         Session session = sessionFactory.getCurrentSession(); // галвный обьект для свзяи с Hibernate
 
         try {
-            session.beginTransaction(); // начинаем транзакцию
+            session.beginTransaction(); // начинаем транзакцию, в спринге потом если использовать @Transactional то вручную транзакциями не надо управлять
 
-            // HQL запрос
+            // HQL запрос более простой
           //  List<Person> people = session.createQuery("FROM Person").getResultList(); всех получаем
 
             List<Person> people = session.createQuery("FROM Person WHERE name LIKE 'A%' ").getResultList(); // получаем по условию

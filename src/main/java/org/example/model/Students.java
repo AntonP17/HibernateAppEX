@@ -19,7 +19,9 @@ public class Students {
     private int age;
 
     // один ко многим, родительская сущность , один студент может иметь много заказов
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)// вот эта строка интересная это и есть ленивая загрузка,чтобы каждый раз не обращаться дофига раз к БД
+    // мы можем загрузить только пользователя , а заказы только потом при нужности
     private List<Orders> orders;
 
 

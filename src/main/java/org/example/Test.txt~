@@ -1,6 +1,6 @@
 СОХРАНЕНИЕ , УДАЛЕНИЕ , ОБНОВЛЕНИЕ СУЩНОСТЕЙ
 
-Person person = new Person("John", 25); // создаем обьект это как раз временное состояние
+Person person = new Person("John", 25); // создаем обьект
             Person person2 = new Person("John2", 55); // создаем обьект
             Person person3 = new Person("John3", 65); // создаем обьект
             Person person4 = new Person("Anton", 75); // создаем обьект
