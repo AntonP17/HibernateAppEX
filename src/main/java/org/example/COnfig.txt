@@ -1,0 +1,83 @@
+я бы создал файл databse.properties и в нем указал свою базу данных
+
+# database.properties
+db.driver=org.postgresql.Driver
+db.url=jdbc:postgresql://localhost:5432/your_database
+db.username=your_username
+db.password=your_password
+
+hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+hibernate.show_sql=true
+hibernate.hbm2ddl.auto=update
+
+далее наш класс конфиг , данные бд можно через валю либо чеез Environment environment;
+
+@Configuration
+@EnableTransactionManagement
+@PropertySource("classpath:database.properties") // Указываем файл свойств
+public class AppConfig {
+
+@Autowired
+    private Environment environment; // Внедряем Environment
+
+ либо код ниже через валю
+
+    @Value("${db.driver}")
+    private String dbDriver;
+
+    @Value("${db.url}")
+    private String dbUrl;
+
+    @Value("${db.username}")
+    private String dbUsername;
+
+    @Value("${db.password}")
+    private String dbPassword;
+
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
+
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernateHbm2ddlAuto;
+
+    // Настройка DataSource
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(dbDriver); // аналогично переделать под dataSource.setDriverClassName(environment.getProperty("db.driver"));
+        dataSource.setUrl(dbUrl); тут так же в остальных строках
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dbPassword);
+        return dataSource;
+    }
+
+    // Настройка SessionFactory
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("com.example.model"); // Указать пакет, где находятс сущности
+        sessionFactory.setHibernateProperties(hibernateProperties());
+        return sessionFactory;
+    }
+
+    // Настройка свойств Hibernate
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", hibernateDialect); // аналогично  properties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", hibernateShowSql); другие строки так же
+        properties.setProperty("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
+        return properties;
+    }
+
+    // Настройка TransactionManager
+    @Bean
+    public HibernateTransactionManager transactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
+    }
+}
