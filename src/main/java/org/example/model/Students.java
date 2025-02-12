@@ -1,10 +1,15 @@
 package org.example.model;
 
+//import com.sun.org.apache.xpath.internal.operations.Or;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+//import sun.jvm.hotspot.ui.SAEditorPane;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "students")
 public class Students {
 
     @Id
@@ -19,8 +24,10 @@ public class Students {
     private int age;
 
     // один ко многим, родительская сущность , один студент может иметь много заказов
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)// вот эта строка интересная это и есть ленивая загрузка,чтобы каждый раз не обращаться дофига раз к БД
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @OneToMany(mappedBy = "student" )
+           // cascade = CascadeType.PERSIST,
+         //   fetch = FetchType.LAZY // вот эта строка интересная это и есть ленивая загрузка,чтобы каждый раз не обращаться дофига раз к БД
     // мы можем загрузить только пользователя , а заказы только потом при нужности
     private List<Orders> orders;
 
@@ -41,6 +48,15 @@ public class Students {
 
     public Students() {
 
+    }
+    // для упрощения создадим отдельный метод для добавление товара человеку и человека  товару
+    public void addOrder (Orders orders){
+        if (this.orders == null){
+            this.orders = new ArrayList<>();
+        }
+
+        this.orders.add(orders);
+        orders.setStudent(this);
     }
 
     public int getId() {

@@ -1,4 +1,21 @@
 СОХРАНЕНИЕ , УДАЛЕНИЕ , ОБНОВЛЕНИЕ СУЩНОСТЕЙ
+// HQL запрос более простой
+          //  List<Person> people = session.createQuery("FROM Person").getResultList(); всех получаем
+
+            List<Person> people = session.createQuery("FROM Person WHERE name LIKE 'A%' ").getResultList(); // получаем по условию
+
+           // session.createQuery("UPDATE Person SET name = 'Alex' where age < 30").executeUpdate(); // обновляем по условию
+
+            session.createQuery("DELETE FROM Person WHERE age < 30").executeUpdate(); // удаляем по условию
+
+
+            for (Person person : people) {
+                System.out.println(person.getName() + " " + person.getAge() + " "+ person.getId());
+            }
+
+            save возвращает id , гарантирует первичный ключ , принадлежит HIbernate
+            persist не возвращает , не гарантирует , принадлежит JPA
+
 
 Person person = new Person("John", 25); // создаем обьект это как раз временное состояние
             Person person2 = new Person("John2", 55); // создаем обьект

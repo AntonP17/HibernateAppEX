@@ -1,12 +1,17 @@
 package org.example;
 
+import jakarta.transaction.Transactional;
 import org.example.model.Books;
+import org.example.model.Orders;
 import org.example.model.Person;
+import org.example.model.Students;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,27 +21,30 @@ import java.util.List;
 public class App {
     public static void main( String[] args ) {
 
-        Configuration configuration = new Configuration().addAnnotatedClass(Person.class); // подключаем конфигурацию, регистрируем класс Person в hibernate
+       // Configuration configuration = new Configuration().addAnnotatedClass(Person.class); // подключаем конфигурацию, регистрируем класс Person в hibernate
+        Configuration configuration = new Configuration().addAnnotatedClass(Students.class).addAnnotatedClass(Orders.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory(); // создаем SessionFactory один раз за все приложение
         Session session = sessionFactory.getCurrentSession(); // галвный обьект для свзяи с Hibernate
 
+
+
         try {
             session.beginTransaction(); // начинаем транзакцию, в спринге потом если использовать @Transactional то вручную транзакциями не надо управлять
 
-            // HQL запрос более простой
-          //  List<Person> people = session.createQuery("FROM Person").getResultList(); всех получаем
+            Students students = new Students("Ivan", 23);
 
-            List<Person> people = session.createQuery("FROM Person WHERE name LIKE 'A%' ").getResultList(); // получаем по условию
+            students.addOrder(new Orders("order1"));
+            students.addOrder(new Orders("order2"));
+            students.addOrder(new Orders("order3"));
 
-           // session.createQuery("UPDATE Person SET name = 'Alex' where age < 30").executeUpdate(); // обновляем по условию
+            // старый код
+//            Students students = new Students("Ivan", 23);
+//            students.addOrder(new Orders("order1"));
+//            students.addOrder(new Orders("order2"));
+//            students.addOrder(new Orders("order3"));
 
-            session.createQuery("DELETE FROM Person WHERE age < 30").executeUpdate(); // удаляем по условию
-
-
-            for (Person person : people) {
-                System.out.println(person.getName() + " " + person.getAge() + " "+ person.getId());
-            }
+            session.save(students);
 
             session.getTransaction().commit(); // применяем транзакцию
 

@@ -3,7 +3,7 @@ package org.example.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "person")
+@Table(name = "people")
 public class Person {
 
     @Id
@@ -17,8 +17,7 @@ public class Person {
     @Column(name = "age")
     private int age;
 
-    public Person(int id, String name, int age) {
-        this.id = id;
+    public Person(String name, int age) {
         this.name = name;
         this.age = age;
     }
