@@ -5,8 +5,6 @@
 Passport passport = session.get(Passport.class, 1);
             System.out.println(passport.getCitizen().getName());
 
-Citizen citizen = session.get(Citizen.class, 1);
-            citizen.getPassport().setPassportNumber(77777);
 
 //            Citizen citizen = new Citizen("John Doe"); // создаем обьект
 //          //  Passport passport = new Passport(citizen, 123456); // создаем обьект

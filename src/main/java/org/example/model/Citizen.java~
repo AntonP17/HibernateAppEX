@@ -1,9 +1,11 @@
 package org.example.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 @Entity
-public class Сitizen {
+@Table(name = "citizen")
+public class Citizen {
 
     @Id
     @Column(name = "id")
@@ -13,15 +15,16 @@ public class Сitizen {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "passport_id")
+    @OneToOne(mappedBy = "citizen")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    // cascade = CascadeType.ALL
     private Passport passport;
 
-    public Сitizen(String name) {
+    public Citizen(String name) {
         this.name = name;
     }
 
-    public Сitizen() {}
+    public Citizen() {}
 
     public int getId() {
         return id;

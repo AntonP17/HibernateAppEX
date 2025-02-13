@@ -2,26 +2,36 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
+@Table(name = "passport")
 public class Passport {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "number")
-    private String number;
 
-    @OneToOne(mappedBy = "passport")
-    private  Сitizen citizen;
+    @OneToOne
+    @JoinColumn(name = "citizen_id", referencedColumnName = "id")
+    private Citizen citizen;
 
-    public Passport( String number) {
+    @Column(name = "passport_number")
+    private int passportNumber;
 
-        this.number = number;
+    public Passport() {
     }
 
-    public Passport() {}
+//    public Passport(Citizen citizen, int passportNumber) {
+//        this.citizen = citizen;
+//        this.passportNumber = passportNumber;
+//    }
+
+    public Passport(int passportNumber) {
+        this.passportNumber = passportNumber;
+    }
 
     public int getId() {
         return id;
@@ -31,19 +41,19 @@ public class Passport {
         this.id = id;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public Сitizen getCitizen() {
+    public Citizen getCitizen() {
         return citizen;
     }
 
-    public void setCitizen(Сitizen citizen) {
+    public void setCitizen(Citizen citizen) {
         this.citizen = citizen;
+    }
+
+    public int getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(int passportNumber) {
+        this.passportNumber = passportNumber;
     }
 }

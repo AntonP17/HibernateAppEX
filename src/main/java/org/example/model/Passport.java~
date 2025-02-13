@@ -2,23 +2,45 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
-public class Passport {
+@Table(name = "passport")
+public class Passport implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @OneToOne
+    @JoinColumn(name = "citizen_id", referencedColumnName = "id")
+    private Citizen citizen;
 
-    @Column(name = "number")
-    private String number;
+    @Column(name = "passport_number")
+    private int passportNumber;
 
-    @OneToOne(mappedBy = "passport")
-    private  Сitizen citizen;
+    public Passport() {
+    }
 
-    public Passport( String number, Сitizen citizen) {
+//    public Passport(Citizen citizen, int passportNumber) {
+//        this.citizen = citizen;
+//        this.passportNumber = passportNumber;
+//    }
 
-        this.number = number;
+    public Passport(int passportNumber) {
+        this.passportNumber = passportNumber;
+    }
+
+    public Citizen getCitizen() {
+        return citizen;
+    }
+
+    public void setCitizen(Citizen citizen) {
         this.citizen = citizen;
+    }
+
+    public int getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(int passportNumber) {
+        this.passportNumber = passportNumber;
     }
 }

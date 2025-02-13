@@ -31,7 +31,8 @@ public class App {
             session.beginTransaction(); // начинаем транзакцию, в спринге потом если использовать @Transactional то вручную транзакциями не надо управлять
 
             Citizen citizen = session.get(Citizen.class, 1);
-            session.remove(citizen);
+            citizen.getPassport().setPassportNumber(77777);
+            
 
             session.getTransaction().commit(); // применяем транзакцию
 
