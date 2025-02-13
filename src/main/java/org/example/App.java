@@ -20,7 +20,7 @@ public class App {
     public static void main( String[] args ) {
 
        // Configuration configuration = new Configuration().addAnnotatedClass(Person.class); // подключаем конфигурацию, регистрируем класс Person в hibernate
-        Configuration configuration = new Configuration().addAnnotatedClass(Citizen.class).addAnnotatedClass(Passport.class);
+        Configuration configuration = new Configuration().addAnnotatedClass(Actor.class).addAnnotatedClass(Movie.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory(); // создаем SessionFactory один раз за все приложение
         Session session = sessionFactory.getCurrentSession(); // галвный обьект для свзяи с Hibernate
@@ -30,8 +30,14 @@ public class App {
         try {
             session.beginTransaction(); // начинаем транзакцию, в спринге потом если использовать @Transactional то вручную транзакциями не надо управлять
 
-            Citizen citizen = session.get(Citizen.class, 1);
-            session.remove(citizen);
+
+             Actor actor1 = session.get(Actor.class, 2);
+            System.out.println(actor1.getMovies());
+
+            Movie movieToRemove = actor1.getMovies().get(0);
+
+            actor1.getMovies().remove(0);
+            movieToRemove.getActors().remove(actor1);
 
             session.getTransaction().commit(); // применяем транзакцию
 

@@ -37,7 +37,7 @@ public class Students {
 //    @JoinTable(
 //            name = "student_course", // Название промежуточной таблицы
 //            joinColumns = @JoinColumn(name = "student_id"), // Столбец для Student
-//            inverseJoinColumns = @JoinColumn(name = "course_id") // Столбец для Course
+//            inverseJoinColumns = @JoinColumn(name = "course_id") // Столбец для Course сущность на другой стороне связи
 //    )
 //    private Set<Course> courses;
 

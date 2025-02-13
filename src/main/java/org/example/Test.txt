@@ -1,5 +1,29 @@
 СОХРАНЕНИЕ , УДАЛЕНИЕ , ОБНОВЛЕНИЕ СУЩНОСТЕЙ
 
+МНОГИЕ КО МНОГИМ
+
+Movie movie = new Movie("The Matrix", 1999);
+             Actor actor1 = session.get(Actor.class, 1);
+
+             movie.setActors(new ArrayList<>(Collections.singletonList(actor1))); // оздаем список фильимов
+
+             actor1.getMovies().add(movie); // присваиваем актеру
+             session.save(movie);
+
+Movie movie = new Movie("The Matrix", 1999);
+             Actor actor1 = new Actor("Keanu Reeves",81);
+             Actor actor2 = new Actor("Laurence Fishburne", 25);
+
+             movie.setActors(new ArrayList<>(List.of(actor1, actor2))); //
+
+             actor1.setMovies(new ArrayList<>(Collections.singletonList(movie))); // связываем актера с фильмо
+             actor2.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+
+             session.save(movie); // сохраняем обьект в БД
+
+             session.save(actor1);
+             session.save(actor2);
+
 код один ко дному
 
 Passport passport = session.get(Passport.class, 1);
