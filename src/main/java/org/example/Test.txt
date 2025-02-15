@@ -8,7 +8,7 @@ session.close();
 Session session = sessionFactory.openSession();
 Author author = session.load(Author.class, 1); // load() ленивая загрузка , возвращает прокси-объект
 уверен что сущность существует
-session.close();
+session.close();++
 
 
 
