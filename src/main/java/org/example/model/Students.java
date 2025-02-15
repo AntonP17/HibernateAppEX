@@ -25,7 +25,7 @@ public class Students {
 
     // один ко многим, родительская сущность , один студент может иметь много заказов
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @OneToMany(mappedBy = "student" )
+    @OneToMany(mappedBy = "student")
            // cascade = CascadeType.PERSIST,
          //   fetch = FetchType.LAZY // вот эта строка интересная это и есть ленивая загрузка,чтобы каждый раз не обращаться дофига раз к БД
     // мы можем загрузить только пользователя , а заказы только потом при нужности

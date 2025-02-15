@@ -1,5 +1,47 @@
 СОХРАНЕНИЕ , УДАЛЕНИЕ , ОБНОВЛЕНИЕ СУЩНОСТЕЙ
 
+Session session = sessionFactory.openSession();
+Author author = session.get(Author.class, 1); // get() когда надо немедленно получить сущность из БД eager loading,
+когда вам нужно проверить наличие сущности в базе данных.
+session.close();
+
+Session session = sessionFactory.openSession();
+Author author = session.load(Author.class, 1); // load() ленивая загрузка , возвращает прокси-объект
+уверен что сущность существует
+session.close();
+
+
+
+ПРОБЛЕМА N + 1 (1 запрос для получения основной сущности,
+ N запросов для получения связанных сущностей (где N — количество записей основной сущности).
+
+ решение
+
+ в репозитории @EntityGraph(attributePaths = {"books"})
+               @Query("SELECT a FROM Author a")
+               List<Author> findAllWithBooks();
+
+               SELECT a.*, b.*
+               FROM author a
+               LEFT JOIN book b ON a.id = b.author_id;
+
+ в сервисе List<Author> authors = authorRepository.findAllWithBooks();
+
+           for (Author author : authors) {
+               System.out.println("Author: " + author.getName());
+               for (Book book : author.getBooks()) {
+                   System.out.println("Book: " + book.getTitle());
+               }
+           }
+
+
+ @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+ @BatchSize(size = 10) // сколько сущностей загрузит за 1 запрос
+ private List<Book> books;          метод в репозитории
+
+SELECT * FROM author;
+SELECT * FROM book WHERE author_id IN (1, 2, 3);
+
 МНОГИЕ КО МНОГИМ
 
 Movie movie = new Movie("The Matrix", 1999);
